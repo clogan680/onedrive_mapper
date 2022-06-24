@@ -7,6 +7,7 @@ const compileUserList = require('./helpers/compileUserList');
 const getAllDrives = require('./helpers/getAllDrives');
 const getRootItems = require('./helpers/getRootItems');
 const getChildItems = require('./helpers/getChildItems');
+const getItemPermissions = require('./helpers/getItemPermissions');
 
 
 
@@ -22,12 +23,12 @@ async function getDrives() {
         try {
             let drives = await getAllDrives(allUsers[x].id, token)
             if (drives.data != undefined) {
-                // console.log(drives.data)
                 let driveRoot = await getRootItems(allUsers[x].id, token)
-                // console.log(driveRoot)
                 let getChildren = await getChildItems(drives.data.value[0].id, driveRoot.data.id, token)
                 console.log(allUsers[x].Email, '------------------------------')
-                console.log(getChildren.data)
+                console.log(getChildren.data.value)
+                let getPermissions = await getItemPermissions(drives.data.value[0].id, driveRoot.data.id, token)
+                console.log(getPermissions.data.value)
             }
         } catch (error) { }
     };
