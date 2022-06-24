@@ -20,7 +20,7 @@ async function compileUserList() {
         let userClean = await userConstructor(constructorObject);
         userArray.push(userClean)
     }
-    console.log(userArray)
+    // console.log(userArray)
     return userArray
 }
 module.exports = compileUserList;
