@@ -37,6 +37,11 @@ async function getDrives() {
                         let getPermissions = await getItemPermissions(drives.data.value[0].id, que[x].id, token)
                         for (let y = 0; y < getPermissions.data.value.length; y++) {
                             let role = getPermissions.data.value[y].roles
+                            let link = getPermissions.data.value[y].link
+                            if (link != undefined) {
+                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, link.type, link.webUrl)
+                                console.log(newRow)
+                            }
                             if (role[0] == 'owner') {
                                 let usersV2 = getPermissions.data.value[y].grantedToV2
                                 if (usersV2 == undefined) {
@@ -87,7 +92,7 @@ async function getDrives() {
                     }
                     // write CSV to a file
                     fs.writeFileSync(`./csvList/${allUsers[i].Email}_mapping.csv`, csv);
-            
+
                 });
             }
         } catch (error) { }
