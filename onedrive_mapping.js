@@ -18,11 +18,13 @@ let csv = []
 
 async function getDrives() {
     let allUsers = await compileUserList();
-    let token = await getAzureToken();
+    var token = await getAzureToken();
+    let start = process.hrtime();
     for (let i = 0; i < allUsers.length; i++) {
         try {
             let drives = await getAllDrives(allUsers[i].id, token)
             if (drives.data != undefined) {
+                var token = await getAzureToken();
                 let driveRoot = await getRootItems(allUsers[i].id, token)
                 let getChildren = await getChildItems(drives.data.value[0].id, driveRoot.data.id, token)
 
@@ -31,9 +33,8 @@ async function getDrives() {
                 }
                 while (que.length > 0) {
                     for (let x = 0; x < que.length; x++) {
-
+                        console.log(process.hrtime(start))
                         let getPermissions = await getItemPermissions(drives.data.value[0].id, que[x].id, token)
-
                         for (let y = 0; y < getPermissions.data.value.length; y++) {
                             let role = getPermissions.data.value[y].roles
                             if (role[0] == 'owner') {
