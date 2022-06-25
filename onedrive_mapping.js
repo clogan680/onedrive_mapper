@@ -41,6 +41,7 @@ async function getDrives() {
                             if (link != undefined) {
                                 let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, link.type, link.webUrl)
                                 console.log(newRow)
+                                csv.push(newRow)
                             }
                             if (role[0] == 'owner') {
                                 let usersV2 = getPermissions.data.value[y].grantedToV2
