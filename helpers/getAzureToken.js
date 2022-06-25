@@ -16,6 +16,7 @@ async function getAzureToken() {
         'application/x-www-form-urlencoded';
 
     let authenticate = await axios.post(endpoint, qs.stringify(requestParams))
+    console.log(authenticate)
     return authenticate.data.access_token;
 }
 module.exports = getAzureToken;

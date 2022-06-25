@@ -12,7 +12,6 @@ const fs = require('fs');
 
 
 let que = [];
-let csv = []
 
 
 
@@ -24,6 +23,7 @@ async function getDrives() {
         try {
             let drives = await getAllDrives(allUsers[i].id, token)
             if (drives.data != undefined) {
+                let csv = []
                 var token = await getAzureToken();
                 let driveRoot = await getRootItems(allUsers[i].id, token)
                 let getChildren = await getChildItems(drives.data.value[0].id, driveRoot.data.id, token)
@@ -75,18 +75,27 @@ async function getDrives() {
                             }
                         }
                         que.shift(que[x])
+                        console.log(que.length)
                     }
                 }
+                converter.json2csv(csv, (err, csv) => {
+                    if (err) {
+                        throw err;
+                    }
+                    // write CSV to a file
+                    fs.writeFileSync(`./csvList/${allUsers[i].Email}_mapping.csv`, csv);
+            
+                });
             }
         } catch (error) { }
     };
-    converter.json2csv(csv, (err, csv) => {
-        if (err) {
-            throw err;
-        }
-        // write CSV to a file
-        fs.writeFileSync('onedrive_map.csv', csv);
+    // converter.json2csv(csv, (err, csv) => {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     // write CSV to a file
+    //     fs.writeFileSync('onedrive_map.csv', csv);
 
-    });
+    // });
 };
 getDrives();
