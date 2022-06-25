@@ -39,7 +39,10 @@ async function getDrives() {
                             let role = getPermissions.data.value[y].roles
                             if (role[0] == 'owner') {
                                 let usersV2 = getPermissions.data.value[y].grantedToV2
-                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2.user.email)
+                                if (usersV2 == undefined) {
+                                    usersV2 = getPermissions.data.value[y].grantedToIdentitiesV2
+                                }
+                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2.siteUser.email)
                                 console.log(newRow)
                                 csv.push(newRow)
                             } else {
