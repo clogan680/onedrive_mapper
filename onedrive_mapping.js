@@ -5,6 +5,7 @@ const getAllDrives = require('./helpers/getAllDrives');
 const getRootItems = require('./helpers/getRootItems');
 const getChildItems = require('./helpers/getChildItems');
 const getItemPermissions = require('./helpers/getItemPermissions');
+const csvBuilder = require('./helpers/csvBuilder');
 
 
 
@@ -35,12 +36,8 @@ async function getDrives() {
                             let role = getPermissions.data.value[y].roles
                             if (role[0] == 'owner') {
                                 let usersV2 = getPermissions.data.value[y].grantedToV2
-
-                                console.log(allUsers[i].Email)
-                                console.log(que[x].parentReference.path)
-                                console.log(que[x].name)
-                                console.log(role[0])
-                                console.log(usersV2.user.email)
+                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2.user.email)
+                                console.log(newRow)
                             } else {
                                 let usersV2Catch = getPermissions.data.value[y].grantedToIdentitiesV2
                                 if (usersV2Catch == undefined) {
@@ -49,19 +46,12 @@ async function getDrives() {
                                 if (Array.isArray(usersV2Catch) == true) {
                                     console.log(usersV2Catch.length)
                                     for (let n = 0; n < usersV2Catch.length; n++) {
-                                        console.log(allUsers[i].Email)
-                                        console.log(que[x].parentReference.path)
-                                        console.log(que[x].name)
-                                        console.log(role[0])
-                                        let usersChecker = usersV2Catch[n]
-                                        console.log(usersV2Catch[n].siteUser.email)
+                                        let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2Catch[n].siteUser.email)
+                                        console.log(newRow)
                                     }
                                 } else {
-                                    console.log(allUsers[i].Email)
-                                    console.log(que[x].parentReference.path)
-                                    console.log(que[x].name)
-                                    console.log(role[0])
-                                    console.log(usersV2Catch.siteUser.email)
+                                    let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2Catch.siteUser.email)
+                                    console.log(newRow)
                                 }
                             }
                         }
