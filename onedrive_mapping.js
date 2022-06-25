@@ -30,25 +30,39 @@ async function getDrives() {
                     for (let x = 0; x < que.length; x++) {
 
                         let getPermissions = await getItemPermissions(drives.data.value[0].id, que[x].id, token)
-                       
+
                         for (let y = 0; y < getPermissions.data.value.length; y++) {
                             let role = getPermissions.data.value[y].roles
                             if (role[0] == 'owner') {
                                 let usersV2 = getPermissions.data.value[y].grantedToV2
-                                
-                                console.log(allUsers[i].Email, '------------------------------')
-                                console.log(que[x].parentReference.path, '------------ PATH')
-                                console.log(que[x].name, '-----------ITEM NAME ')
+
+                                console.log(allUsers[i].Email)
+                                console.log(que[x].parentReference.path)
+                                console.log(que[x].name)
                                 console.log(role[0])
-                                console.log(Array.isArray(usersV2))
+                                console.log(usersV2.user.email)
                             } else {
-                                let usersV2 = getPermissions.data.value[y].grantedToIdentitiesV2
-                                
-                                console.log(allUsers[i].Email, '------------------------------')
-                                console.log(que[x].parentReference.path, '------------ PATH')
-                                console.log(que[x].name, '-----------ITEM NAME ')
-                                console.log(role[0])
-                                console.log(Array.isArray(usersV2))
+                                let usersV2Catch = getPermissions.data.value[y].grantedToIdentitiesV2
+                                if (usersV2Catch == undefined) {
+                                    usersV2Catch = getPermissions.data.value[y].grantedToV2
+                                }
+                                if (Array.isArray(usersV2Catch) == true) {
+                                    console.log(usersV2Catch.length)
+                                    for (let n = 0; n < usersV2Catch.length; n++) {
+                                        console.log(allUsers[i].Email)
+                                        console.log(que[x].parentReference.path)
+                                        console.log(que[x].name)
+                                        console.log(role[0])
+                                        let usersChecker = usersV2Catch[n]
+                                        console.log(usersV2Catch[n].siteUser.email)
+                                    }
+                                } else {
+                                    console.log(allUsers[i].Email)
+                                    console.log(que[x].parentReference.path)
+                                    console.log(que[x].name)
+                                    console.log(role[0])
+                                    console.log(usersV2Catch.siteUser.email)
+                                }
                             }
                         }
                         var folder
