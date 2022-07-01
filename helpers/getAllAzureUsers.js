@@ -1,7 +1,6 @@
 const getAzureToken = require('./getAzureToken');
 const axios = require('axios');
 
-
 async function getAllAzureUsers(link) {
     let azureToken = await getAzureToken();
     let azureusers = await axios.get(link,

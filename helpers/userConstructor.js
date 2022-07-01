@@ -1,4 +1,3 @@
-
 async function userConstructor(constructorObject) {
     let returnObject = {
         id: constructorObject.id,
