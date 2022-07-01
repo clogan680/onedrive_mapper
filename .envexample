@@ -1,0 +1,9 @@
+endpoint="https://login.microsoftonline.com/{microsoft-tenant-id}/oauth2/v2.0/token" 
+
+grant_type="client_credentials" 
+
+client_id="{app-registration-client-id}" 
+
+client_secret="{app-registration-client-secret}" 
+
+scope="https://graph.microsoft.com/.default"

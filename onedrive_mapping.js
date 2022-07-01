@@ -123,7 +123,7 @@ async function getDrives() {
                         throw err;
                     }
                     // write CSV to a file
-                    fs.writeFileSync(`./csvList/${allUsers[i].Email}_mapping.csv`, csv);
+                    fs.writeFileSync(`./${allUsers[i].Email}_mapping.csv`, csv);
 
                 });
             }
