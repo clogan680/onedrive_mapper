@@ -10,8 +10,10 @@ const fs = require('fs');
 
 
 async function getDrives() {
+    // Grab and create array of all users
     const allUsers = await compileUserList();
     var token = await getAzureToken();
+    // Create timers, 1 for total time, 1 for token resets
     let total = process.hrtime();
     let timer = process.hrtime();
     function sleep(ms) {
@@ -22,18 +24,24 @@ async function getDrives() {
         await sleep(3000);
     }
     waiter()
+    // for each user grab drive data
     for (let i = 0; i < allUsers.length; i++) {
         try {
             let drives = await getAllDrives(allUsers[i].id, token)
+            // check if user has a valid drive
             if (drives.data != undefined) {
                 let csv = []
                 let que = []
+                // get root of user's drive
                 let driveRoot = await getRootItems(allUsers[i].id, token)
+                // user root to get base level children items (what you see when landing on onedrive gui first level)
                 let getChildren = await getChildItems(drives.data.value[0].id, driveRoot.data.id, token)
+                // for each child, add it to our que
                 for (let y = 0; y < getChildren.data.value.length; y++) {
                     que.push(getChildren.data.value[y])
                 }
                 console.log(que.length, '-----QUE LENGTH')
+                // for each item in que, get the details, and push relevant info to csv list
                 for (let x = 0; x < que.length; x++) {
                     console.log(x, '-----CURRENT INDEX')
                     console.log(process.hrtime(timer)[0], '-----TOKEN TIMER')
@@ -95,6 +103,7 @@ async function getDrives() {
                             }
                         }
                     }
+                    // check if item has children. If it does, add each child to the end of the que
                     var folder
                     try {
                         folder = que[x].folder.childCount
