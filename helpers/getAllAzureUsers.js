@@ -3,9 +3,7 @@ const axios = require('axios');
 
 
 async function getAllAzureUsers(link) {
-
     let azureToken = await getAzureToken();
-
     let azureusers = await axios.get(link,
         {
             headers: {
@@ -14,6 +12,5 @@ async function getAllAzureUsers(link) {
             },
         })
     return azureusers
-
 }
 module.exports = getAllAzureUsers;

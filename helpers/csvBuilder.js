@@ -1,5 +1,5 @@
 
-async function csvConstructor(owner,path,docName,permission,user) {
+async function csvConstructor(owner, path, docName, permission, user) {
     let returnObject = {
         owner: owner,
         path: path,

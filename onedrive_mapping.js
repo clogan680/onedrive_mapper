@@ -10,7 +10,7 @@ const fs = require('fs');
 
 
 async function getDrives() {
-    let allUsers = await compileUserList();
+    const allUsers = await compileUserList();
     var token = await getAzureToken();
     let total = process.hrtime();
     let timer = process.hrtime();
@@ -18,10 +18,9 @@ async function getDrives() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     async function waiter() {
-        console.log('Wait');
+        console.log('Starting');
         await sleep(3000);
     }
-
     waiter()
     for (let i = 0; i < allUsers.length; i++) {
         try {
@@ -29,13 +28,12 @@ async function getDrives() {
             if (drives.data != undefined) {
                 let csv = []
                 let que = []
-                var token = await getAzureToken();
                 let driveRoot = await getRootItems(allUsers[i].id, token)
                 let getChildren = await getChildItems(drives.data.value[0].id, driveRoot.data.id, token)
-
                 for (let y = 0; y < getChildren.data.value.length; y++) {
                     que.push(getChildren.data.value[y])
                 }
+                console.log(que.length, '-----QUE LENGTH')
                 for (let x = 0; x < que.length; x++) {
                     console.log(x, '-----CURRENT INDEX')
                     console.log(process.hrtime(timer)[0], '-----TOKEN TIMER')
@@ -59,7 +57,13 @@ async function getDrives() {
                             if (usersV2 == undefined) {
                                 usersV2 = getPermissions.data.value[y].grantedToIdentitiesV2
                             }
-                            let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2.siteUser.email)
+                            try {
+                                var sharedUser = usersV2.siteUser.email
+                            } catch (error) {
+                                sharedUser = usersV2.user.email
+                            }
+
+                            let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], sharedUser)
                             console.log(newRow)
                             csv.push(newRow)
                         } else {
@@ -69,12 +73,23 @@ async function getDrives() {
                             }
                             if (Array.isArray(usersV2Catch) == true) {
                                 for (let n = 0; n < usersV2Catch.length; n++) {
-                                    let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2Catch[n].siteUser.email)
+                                    try {
+                                        var sharedUser = usersV2Catch[n].siteUser.email
+                                    } catch (error) {
+                                        sharedUser = usersV2Catch[n].user.email
+                                    }
+                                    let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], sharedUser)
                                     console.log(newRow)
                                     csv.push(newRow)
                                 }
                             } else {
-                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], usersV2Catch.siteUser.email)
+                                try {
+                                    var sharedUser = usersV2Catch.siteUser.email
+                                } catch (error) {
+                                    sharedUser = usersV2Catch.user.email
+                                }
+
+                                let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, role[0], sharedUser)
                                 console.log(newRow)
                                 csv.push(newRow)
                             }

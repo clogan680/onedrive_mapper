@@ -1,6 +1,6 @@
 const axios = require('axios');
 const qs = require('qs');
-const azureAuth = require('../config/azureAuth.json');
+const azureAuth = require('../config/azureAuth');
 
 async function getAzureToken() {
 

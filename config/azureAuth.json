@@ -1,7 +1,0 @@
-{
-    "endpoint":"https://login.microsoftonline.com/15c0e2d9-ea17-4f45-aa46-23564bdf04de/oauth2/v2.0/token",
-    "grant_type": "client_credentials",
-    "client_id": "d02312a2-e956-4ace-90b1-2360aa6b20e9",
-    "client_secret": "K6W8Q~y9vMlnamlghdARRFDLt5~Elrw7yQGbGcKQ",
-    "scope": "https://graph.microsoft.com/.default"
-}
