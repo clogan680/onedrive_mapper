@@ -29,7 +29,7 @@ async function getDrives() {
         try {
             let drives = await getAllDrives(allUsers[i].id, token)
             // check if user has a valid drive
-            if (drives.data != undefined) {
+            if (drives.data) {
                 let csv = []
                 let que = []
                 // get root of user's drive
@@ -55,7 +55,7 @@ async function getDrives() {
                     for (let y = 0; y < getPermissions.data.value.length; y++) {
                         let role = getPermissions.data.value[y].roles
                         let link = getPermissions.data.value[y].link
-                        if (link != undefined) {
+                        if (link) {
                             let newRow = await csvBuilder(allUsers[i].Email, que[x].parentReference.path, que[x].name, link.type, link.webUrl)
                             console.log(newRow)
                             csv.push(newRow)
@@ -79,7 +79,7 @@ async function getDrives() {
                             if (usersV2Catch == undefined) {
                                 usersV2Catch = getPermissions.data.value[y].grantedToV2
                             }
-                            if (Array.isArray(usersV2Catch) == true) {
+                            if (Array.isArray(usersV2Catch)) {
                                 for (let n = 0; n < usersV2Catch.length; n++) {
                                     try {
                                         var sharedUser = usersV2Catch[n].siteUser.email
